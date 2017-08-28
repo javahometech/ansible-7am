@@ -1,0 +1,9 @@
+[loadbalancer]
+192.168.50.10  ansible_user=vagrant ansible_ssh_pass=vagrant
+
+[webservers]
+192.168.50.11 ansible_user=vagrant ansible_ssh_pass=vagrant
+192.168.50.12 ansible_user=vagrant ansible_ssh_pass=vagrant
+
+[dbservers]
+192.168.50.13 ansible_user=vagrant ansible_ssh_pass=vagrant
