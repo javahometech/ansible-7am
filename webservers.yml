@@ -1,0 +1,21 @@
+---
+- hosts: webservers
+  become: yes
+  vars:
+    apache: httpd
+  # Install & configure apache servers
+  tasks:
+    - name: install apache package
+      yum: name={{item}} state=present
+      with_items:
+        - '{{apache}}'
+    - name: start and enable apache
+      service: name={{apache}} state=started enabled=yes
+    # Deploy the application on apache
+    - name: deploy a static web application
+      copy: src=index.html dest=/var/www/html/index.html
+      notify:
+        - restart apache
+  handlers:
+    - name: restart apache
+      service: name={{apache}} state=restarted

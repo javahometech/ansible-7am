@@ -1,0 +1,24 @@
+---
+- hosts: dbservers
+  become: yes
+  # Install & configure mysql server on ubuntu
+  tasks:
+  - name: install python mysql
+    apt: name=python-mysqldb state=present
+  - name: install mysql server
+    apt: name=mysql-server state=present
+  - name: Start and enable mysql server
+    service: name=mysql state=started  enabled=yes
+  - name: make sure mysql listens from all the hosts
+    lineinfile: dest=/etc/mysql/my.cnf regexp='^bind-address' line='bind-address=0.0.0.0'
+    notify:
+       - restart mysql
+  - name: create mysql db
+    mysql_db: name=javahome-dev state=present
+  - name: create mysql user and grant permitions
+    mysql_user: name=javahome password=javahome123 priv='javahome-dev.*:ALL' state=present
+  - name: create mysql db
+    mysql_db: name=javahome-qa state=absent
+  handlers:
+    - name: restart mysql
+      service: name=mysql state=restarted
