@@ -1,0 +1,4 @@
+---
+# handlers file for loadbalancer
+  - name: restart server
+    service: name=nginx state=restarted

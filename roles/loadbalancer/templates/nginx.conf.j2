@@ -1,0 +1,14 @@
+events {}
+http {
+    upstream backend {
+        {% for webserver in groups.webservers %}
+         server {{webserver}};
+        {% endfor %}
+    }
+ server {
+   listen 80;
+   location / {
+     proxy_pass  http://backend;
+   }
+ }
+}
